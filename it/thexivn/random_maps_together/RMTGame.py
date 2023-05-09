@@ -75,7 +75,7 @@ class RMTGame:
         self._score_ui.subscribe("ui_skip_medal", self.command_skip_medal)
         self._score_ui.subscribe("ui_free_skip", self.command_free_skip)
         self._score_ui.subscribe("ui_toggle_pause", self.command_toggle_pause)
-        self._score_ui.subscribe("ui_toggle_scoreboard", self.command_toggle_scoreboard)
+        # self._score_ui.subscribe("ui_toggle_scoreboard", self.command_toggle_scoreboard)
 
         self._score_ui.subscribe("ui_set_game_time_15m", self.set_game_time_15m)
         self._score_ui.subscribe("ui_set_game_time_30m", self.set_game_time_30m)
@@ -110,9 +110,7 @@ class RMTGame:
     async def update_ui_loop(self):
         while True:
             await asyncio.sleep(0.25)
-            if self._scoreboard_ui._is_global_shown:
-                await self._scoreboard_ui.display()
-            elif len(self._scoreboard_ui._is_player_shown) > 0:
+            if len(self._scoreboard_ui._is_player_shown) > 0:
                 await self._scoreboard_ui.display(self._scoreboard_ui._is_player_shown.keys())
 
     async def command_start_rmt(self, player: Player, _, values, *args, **kwargs):
@@ -179,7 +177,10 @@ class RMTGame:
                 load_succeeded = True
             except Exception as e:
                 logger.error("failed to load map...", exc_info=e)
-                await self._map_handler.remove_loaded_map()
+                try:
+                    await self._map_handler.remove_loaded_map()
+                except Exception as e:
+                    logger.error("failed to remove map...", exc_info=e)
 
         self._game_state.map_is_loading = False
 
@@ -369,8 +370,8 @@ class RMTGame:
         #     await self._map_handler._map_manager.extend_ta(pause_duration)
         logging.info(f"Set paused: " + str(self._game_state.is_paused))
 
-    async def command_toggle_scoreboard(self, player: Player, *args, **kw):
-        await self._scoreboard_ui.toggle_for(player.login)
+    # async def command_toggle_scoreboard(self, player: Player, *args, **kw):
+    #     await self._scoreboard_ui.toggle_for(player.login)
 
     async def respawn_player(self, player: Player):
         # first, force mode 1 (spectator), then force mode 2 (player), then force mode 0 (user selectable)

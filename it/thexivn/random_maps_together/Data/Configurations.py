@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import logging
 import time as py_time
 
 from .Medals import Medals
@@ -8,16 +9,17 @@ from .GameModes import GameModes
 class Configurations:
     goal_medal = Medals.AUTHOR
     skip_medal = Medals.GOLD
-    min_level_to_start = 1
+    min_level_to_start = 0
 
     def set_min_level_to_start(self, old_value: str, value: str):
         level = int(value)
-        if level < 0:
-            level = 0
+        if level < -1:
+            level = -1
         elif level > 3:
             level = 3
 
         self.min_level_to_start = level
+        logging.info(f"Set min level to start: {level}")
 
     def update_time_left(self, rmt_game, free_skip=False, goal_medal=False, skip_medal=False):
         pass

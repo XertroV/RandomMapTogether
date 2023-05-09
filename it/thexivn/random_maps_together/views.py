@@ -141,7 +141,8 @@ class RMTScoreBoard(TemplateView):
         return data
 
     async def toggle_for(self, login):
-        if login in self._is_player_shown or self._is_global_shown:
+        if login in self._is_player_shown:
             await self.hide([login])
         else:
             await self.display([login])
+        logging.info(f"scoreboard toggle: {login}, {self._is_global_shown}, {self._is_player_shown}")

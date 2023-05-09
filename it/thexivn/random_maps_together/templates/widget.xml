@@ -43,7 +43,7 @@
                         halign="left" valign="center" style="CardButtonSmallS"
                         id="rmt_pause_btn" scriptevents="1" action="{{ id }}__ui_toggle_pause" />
             {% endif %}
-            {% if not map_loading %}
+            {% if not map_loading and false %}
             <label pos="180.7 1" text="$sToggle Scoreboard" textsize="2.5" textfont="RajdhaniMono"
                         halign="right" valign="top" style="CardButtonSmallS"
                         id="rmt_scoreboard_btn" scriptevents="1" action="{{ id }}__ui_toggle_scoreboard" />

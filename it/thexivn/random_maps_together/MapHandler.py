@@ -53,7 +53,10 @@ class MapHandler:
         await self._map_manager.update_list(True, True)
         logger.info('UPLOAD COMPLETE')
         await self._map_manager.set_current_map(random_map.uuid)
-        await self._map_manager.remove_map(map_to_remove, True)
+        try:
+            await self._map_manager.remove_map(map_to_remove, True)
+        except Exception as e:
+            logging.warn(f"exception removing map: {e}")
         logger.info('map loaded')
 
     async def pre_load_next_map(self):
